@@ -15,19 +15,16 @@ export class UserService {
   }
 
   async getAllUsers(params: {
-    skip: number; // pagintor
-    take: number; //page size
-    // cursor?: Prisma.UserWhereUniqueInput;
-    // where?: Prisma.UserWhereInput;
-    orderBy: Prisma.UserOrderByWithRelationInput ;
+    skip: string; // pagintor
+    take: string; //page size
+    orderByField: string;
+    orderByValue: 'asc' | 'desc';
   }): Promise<User[]> {
-    const { skip, take,  orderBy } = params;
+    const { skip, take, orderByField, orderByValue } = params;
     return this.prisma.user.findMany({
-      skip,
-      take,
-    //   cursor,
-    //   where,
-      orderBy,
+      skip: Number(skip),
+      take: Number(take),
+      orderBy: {[orderByField]: orderByValue},
     });
   }
 
@@ -53,6 +50,4 @@ export class UserService {
       where,
     });
   }
-
-
 }

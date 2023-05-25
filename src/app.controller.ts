@@ -1,28 +1,38 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './services/user.service';
-import { User, Prisma } from '@prisma/client';
-@Controller()
+import { User} from '@prisma/client';
+@Controller('/user')
 export class AppController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('users')
+  @Get('')
   async getAllUsers(
-    @Param('pagination')
+    @Query()
     pagination: {
-      skip: number;
-      take: number;
-      orderBy: Prisma.UserOrderByWithRelationInput;
+      skip: string;
+      take: string;
+      orderByField: string;
+      orderByValue: 'asc' | 'desc';
     },
   ): Promise<User[]> {
     return this.userService.getAllUsers(pagination);
   }
 
-  @Post('create-user')
+  @Post('create')
   async addNewUser(@Body() userData: User): Promise<User> {
     return this.userService.createUser(userData);
   }
 
-  @Put('user/:id')
+  @Put(':id')
   async updateUser(
     @Param('id') id: string,
     @Body() userData: User,
@@ -33,9 +43,9 @@ export class AppController {
     });
   }
 
-  @Delete('user/:id')
-  async deleteUser(@Param('id') id:string): Promise<User>{
-    return this.userService.deleteUser({id: parseInt(id)});
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string): Promise<User> {
+    return this.userService.deleteUser({ id: parseInt(id) });
   }
 
 }
