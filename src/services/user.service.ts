@@ -29,6 +29,9 @@ export class UserService {
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
+    if(await this.findUserByEmailorId(data)){
+       throw new Error("Email Already Exists"); 
+    }
     return this.prisma.user.create({
       data,
     });

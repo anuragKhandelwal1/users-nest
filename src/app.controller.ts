@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { User} from '@prisma/client';
+import { UserDto } from './dto/user.dto';
 @Controller('/user')
 export class AppController {
   constructor(private readonly userService: UserService) {}
@@ -28,14 +29,14 @@ export class AppController {
   }
 
   @Post('create')
-  async addNewUser(@Body() userData: User): Promise<User> {
+  async addNewUser(@Body() userData: UserDto): Promise<User> {
     return this.userService.createUser(userData);
   }
 
   @Put(':id')
   async updateUser(
     @Param('id') id: string,
-    @Body() userData: User,
+    @Body() userData: UserDto,
   ): Promise<User> {
     return this.userService.updateUser({
       where: { id: Number(id) },
