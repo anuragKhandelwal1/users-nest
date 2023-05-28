@@ -25,12 +25,20 @@ export class AppController {
       orderByValue: 'asc' | 'desc';
     },
   ): Promise<User[]> {
-    return this.userService.getAllUsers(pagination);
+    try {
+      return this.userService.getAllUsers(pagination);
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Post('create')
   async addNewUser(@Body() userData: UserDto): Promise<User> {
+   try {
     return this.userService.createUser(userData);
+   } catch (error) {
+    throw error;
+   }
   }
 
   @Put(':id')
@@ -38,15 +46,24 @@ export class AppController {
     @Param('id') id: string,
     @Body() userData: UserDto,
   ): Promise<User> {
-    return this.userService.updateUser({
-      where: { id: Number(id) },
-      data: userData,
-    });
+    try {
+      return this.userService.updateUser({
+        where: { id: Number(id) },
+        data: userData,
+      });
+    } catch (error) {
+      throw error;
+    }
+   
   }
 
   @Delete(':id')
   async deleteUser(@Param('id') id: string): Promise<User> {
-    return this.userService.deleteUser({ id: parseInt(id) });
+    try {
+      return this.userService.deleteUser({ id: parseInt(id) });
+    } catch (error) {
+      throw error;
+    }
   }
 
 }
